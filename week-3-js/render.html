@@ -1,0 +1,79 @@
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Todo List</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+
+<body>
+    <h1>Todo list</h1>
+  <div id="todos">
+  </div>
+    <input type="text"></input>
+    <button onclick="addTodo()">Add todo!</button>
+    <script>
+      let todos = [];
+      let currentIndex = 1;
+      function addTodo() {
+        todos.push({
+          title: document.querySelector("input").value
+        })
+        console.log(todos);
+        render();
+      }
+  
+      function deleteTodo(index) {
+        const element = document.getElementById("todo-" + index);
+        if (element) {
+            element.parentNode.removeChild(element);
+        }
+        todos.splice(index,1);
+        render();
+      }
+   
+      function render() {
+        document.getElementById("todos").innerHTML = ''
+        console.log("called render")
+        todos.forEach(element => {
+            const todoText = element.title;
+
+            if (todoText === '') {
+                alert('Please enter a todo item.');
+                return;
+            }
+
+            const parentEl = document.getElementById("todos");
+
+            // Create new todo div
+            const newTodo = document.createElement('div');
+            newTodo.setAttribute("id", 'todo-' + currentIndex);
+
+            // Create new heading element
+            const newHeading = document.createElement('h4');
+            newHeading.textContent = currentIndex + '. ' + todoText;
+
+            // Create new button element
+            const newButton = document.createElement('button');
+            newButton.textContent = 'Delete';
+            newButton.setAttribute("onclick", "deleteTodo(" + currentIndex + ")");
+
+            // Append elements to the new todo div
+            newTodo.appendChild(newHeading);
+            newTodo.appendChild(newButton);
+
+            // Append new todo to the parent element
+            parentEl.appendChild(newTodo);
+
+            // Increment the index for the next todo item
+            currentIndex++;
+
+            // Clear the input field
+            document.querySelector("input").value = '';
+        });
+      }
+    </script>
+</body>
+</html>

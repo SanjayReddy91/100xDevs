@@ -1,0 +1,2 @@
+DOM(Document Object Manipulation), state, components and rendering.
+Ground work for React.

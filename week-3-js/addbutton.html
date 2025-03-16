@@ -1,0 +1,21 @@
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Todo List</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+	<button onclick="createComplexDomElement()">Add</button>
+</body>
+<script>
+	function createComplexDomElement() {
+		const div = document.createElement("div");
+		const h1 = document.createElement("h2");
+		h1.innerHTML = "random text";
+		div.appendChild(h1);
+		document.querySelector("body").appendChild(div);
+	}
+</script>
