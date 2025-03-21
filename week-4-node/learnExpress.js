@@ -8,6 +8,20 @@ app.use(express.urlencoded({ extended: true }));
 // Path to the todos.json file
 const todosFilePath = path.join(__dirname, "todos.json");
 
+// function getUsername(req,res,next) {
+//     const username = req.query
+// }
+
+function isOldEnoughMiddleWare(req,res,next) {
+    const age = req.headers['age'];
+    if(age >= 18) {
+        next();
+    } else {
+        res.json({message: 'You are underage'});
+    }
+}
+app.use(isOldEnoughMiddleWare)
+
 function readTodos() {
     if (!fs.existsSync(todosFilePath)) {
         return [];
@@ -45,9 +59,14 @@ app.post('/add', (req, res) => {
     res.json({ message: 'Todo added successfully!'});
   });
 
-app.get('/list', (req,res) => {
+app.get('/list', (req,res,next) => {
     const todos = readTodos();
     res.send(todos);
+    next();
+}, (req,res,next) => {
+    const todos = readTodos();
+    console.log("second middleware");
+    console.log(todos);
 })
 
 app.delete('/remove', (req,res) => {
