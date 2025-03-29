@@ -1,1 +1,1 @@
-http deep dive, authentication, JWT, jwt.sign(), jwt.verify()
+http deep dive, authentication, JWT, jwt.sign(), jwt.verify(), mongoDB setup, try catch block.
