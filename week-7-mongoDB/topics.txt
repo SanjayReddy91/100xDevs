@@ -1,1 +1,2 @@
 MongoDB, connect, Model, create, find, findOne, Schema, ObjectId
+Covered mongo DB basics
