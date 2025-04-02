@@ -2,12 +2,13 @@ const express = require("express");
 const {UserModel, TodoModel} = require("./db");
 const jwt = require("jsonwebtoken");
 const { default: mongoose } = require("mongoose");
+require('dotenv').config();
 
 const app = express();
 app.use(express.json());
 
-const JWT_SECRET = "ilove100xdevsliveclasses";
-mongoose.connect("mongodb+srv://sanjayreddykodidela915444:Sanjay2002@cluster0.ucawm0x.mongodb.net/todos_app_database")
+const JWT_SECRET = process.env.JWT_SECRET;
+mongoose.connect(process.env.MONGODB_URI)
 
 app.post("/signup",async function(req,res) {
     const email = req.body.email;
