@@ -14,7 +14,10 @@ app.use(express.json());
 const JWT_SECRET = process.env.JWT_SECRET;
 mongoose.connect(process.env.MONGODB_URI)
 
-//skeleton endpoints
+
+
+
+/*=============< ADMIN ENDPOINTS >=============*/
 app.post("/admin/signup", async function(req,res) {
     const requestBody = z.object({
         email: z.string().min(5).max(50).email(),
@@ -125,7 +128,7 @@ app.post("/admin/createCourse", auth, async function(req,res) {
     })
 })
 
-//delete course if found and owned by admin
+//delete course if found and owned by admin alsong with all the course contents
 app.delete("/admin/deleteCourse/:courseId", auth, async function(req,res) {
     const courseId = req.params.courseId;
     const userId = req.userId;
@@ -133,17 +136,24 @@ app.delete("/admin/deleteCourse/:courseId", auth, async function(req,res) {
     try{
         const foundCourse = await CourseModel.findById(courseId);
         if(foundCourse && foundCourse.ownerId == userId) {
+            await CourseContentModel.deleteMany({courseId: courseId})
             await CourseModel.findByIdAndDelete(courseId)
-        } else {
+        } else if(foundCourse.ownerId != userId){
+            res.status(404).json({
+                message: "Course not owned by you"
+            })
+            return
+        }
+        else {
             res.status(404).json({
                 message: "Course already deleted or not found"
             })
             return
         }
     } catch(error) {
-        console.log("Error occurred in deleting course: " + error);
+        console.log("Error occurred in deleting course/contents: " + error);
         res.status(400).json({
-            message: "Error occurred in deleting course",
+            message: "Error occurred in deleting course/contents",
             error: error
         });
         return
@@ -189,6 +199,8 @@ app.post("/admin/addCourseContent/:courseId", auth, async function(req,res) {
 
 
 
+
+/*=============< USER ENDPOINTS >=============*/
 //Signup for user
 app.post("/user/signup", async function(req,res) {
     const requestBody = z.object({

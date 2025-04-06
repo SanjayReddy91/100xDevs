@@ -1,3 +1,3 @@
-Delete course let other admins delete courses.
-Delete all the associated course Contents when course is deleted.
+Delete course let other admins delete courses. FIXED
+Delete all the associated course Contents when course is deleted. FIXED
 Remove courseId in all the users courses list. [Not Important]
